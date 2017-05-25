@@ -1,15 +1,15 @@
-package Learning;
+package Train;
 
 import java.util.Arrays;
 
 /**
  * Created by oradchykova on 5/18/17.
  */
-public class StockLearnObject {
+public class LearningSample {
     private final Double[] features;
     private final Boolean result;
 
-    public StockLearnObject(Boolean result, Double... features) {
+    public LearningSample(Boolean result, Double... features) {
         this.features = features;
         this.result = result;
     }

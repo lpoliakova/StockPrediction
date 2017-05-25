@@ -1,6 +1,5 @@
-package Learning;
+package Train;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,9 +41,9 @@ public class GaussianModel implements Model{
         return prediction;
     }
 
-    public Model learn(List<StockLearnObject> learnObjects){
-        List<StockLearnObject> raisingObjects = getRaisingObjects(learnObjects);
-        List<StockLearnObject> fallingObjects = getFallingObjects(learnObjects);
+    public Model learn(List<LearningSample> learnObjects){
+        List<LearningSample> raisingObjects = getRaisingObjects(learnObjects);
+        List<LearningSample> fallingObjects = getFallingObjects(learnObjects);
         meanRaising = findMean(raisingObjects);
         meanFalling = findMean(fallingObjects);
         distanceRaising = findInverse2(findDistance(raisingObjects, meanRaising));
@@ -52,27 +51,27 @@ public class GaussianModel implements Model{
         return this;
     }
 
-    private List<StockLearnObject> getRaisingObjects(List<StockLearnObject> learnObjects){
-        List<StockLearnObject> raisingObjects = new ArrayList<>();
-        for (StockLearnObject learnObject : learnObjects) {
+    private List<LearningSample> getRaisingObjects(List<LearningSample> learnObjects){
+        List<LearningSample> raisingObjects = new ArrayList<>();
+        for (LearningSample learnObject : learnObjects) {
             if (learnObject.getResult()) raisingObjects.add(learnObject);
         }
         return raisingObjects;
     }
 
-    private List<StockLearnObject> getFallingObjects(List<StockLearnObject> learnObjects){
-        List<StockLearnObject> fallingObjects = new ArrayList<>();
-        for (StockLearnObject learnObject : learnObjects) {
+    private List<LearningSample> getFallingObjects(List<LearningSample> learnObjects){
+        List<LearningSample> fallingObjects = new ArrayList<>();
+        for (LearningSample learnObject : learnObjects) {
             if (!learnObject.getResult()) fallingObjects.add(learnObject);
         }
         return fallingObjects;
     }
 
-    private Double[] findMean(List<StockLearnObject> learnObjects){
+    private Double[] findMean(List<LearningSample> learnObjects){
         int featureLen = learnObjects.get(0).getFeatures().length;
         Double[] mean = new Double[featureLen];
         Arrays.fill(mean, 0.0);
-        for (StockLearnObject learnObject : learnObjects) {
+        for (LearningSample learnObject : learnObjects) {
             for (int i = 0; i < featureLen; i++){
                 mean[i] += (learnObject.getFeatures()[i] / learnObjects.size());
             }
@@ -80,11 +79,11 @@ public class GaussianModel implements Model{
         return mean;
     }
 
-    private Double[][] findDistance(List<StockLearnObject> learnObjects, Double[] mean){
+    private Double[][] findDistance(List<LearningSample> learnObjects, Double[] mean){
         int featureLen = learnObjects.get(0).getFeatures().length;
         Double[][] distance = new Double[featureLen][featureLen];
         for (int i = 0; i < featureLen; i++) Arrays.fill(distance[i], 0.0);
-        for (StockLearnObject learnObject : learnObjects) {
+        for (LearningSample learnObject : learnObjects) {
             for (int i = 0; i < featureLen; i++) {
                 for (int j = 0; j < i + 1; j++) {
                     Double curDistance = (learnObject.getFeatures()[i] - mean[i]) * (learnObject.getFeatures()[j] - mean[j]) / learnObjects.size();

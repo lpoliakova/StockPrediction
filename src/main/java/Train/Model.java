@@ -1,4 +1,4 @@
-package Learning;
+package Train;
 
 /**
  * Created by oradchykova on 5/18/17.

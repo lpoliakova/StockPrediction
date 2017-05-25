@@ -1,5 +1,5 @@
-import Learning.Learner;
-import Learning.Model;
+import Train.Learner;
+import Train.Model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
