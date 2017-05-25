@@ -42,51 +42,51 @@ public class GaussianModel implements Model{
     }
 
     public Model learn(List<LearningSample> learnObjects){
-        List<LearningSample> raisingObjects = getRaisingObjects(learnObjects);
-        List<LearningSample> fallingObjects = getFallingObjects(learnObjects);
-        meanRaising = findMean(raisingObjects);
-        meanFalling = findMean(fallingObjects);
-        distanceRaising = findInverse2(findDistance(raisingObjects, meanRaising));
-        distanceFalling = findInverse2(findDistance(fallingObjects, meanFalling));
+        List<LearningSample> raisingSamples = getRaisingObjects(learnObjects);
+        List<LearningSample> fallingSamples = getFallingObjects(learnObjects);
+        meanRaising = findMean(raisingSamples);
+        meanFalling = findMean(fallingSamples);
+        distanceRaising = findInverse2(findDistance(raisingSamples, meanRaising));
+        distanceFalling = findInverse2(findDistance(fallingSamples, meanFalling));
         return this;
     }
 
-    private List<LearningSample> getRaisingObjects(List<LearningSample> learnObjects){
-        List<LearningSample> raisingObjects = new ArrayList<>();
-        for (LearningSample learnObject : learnObjects) {
-            if (learnObject.getResult()) raisingObjects.add(learnObject);
+    private List<LearningSample> getRaisingObjects(List<LearningSample> learnSamples){
+        List<LearningSample> raisingSamples = new ArrayList<>();
+        for (LearningSample learnSample : learnSamples) {
+            if (learnSample.getResult()) raisingSamples.add(learnSample);
         }
-        return raisingObjects;
+        return raisingSamples;
     }
 
-    private List<LearningSample> getFallingObjects(List<LearningSample> learnObjects){
-        List<LearningSample> fallingObjects = new ArrayList<>();
-        for (LearningSample learnObject : learnObjects) {
-            if (!learnObject.getResult()) fallingObjects.add(learnObject);
+    private List<LearningSample> getFallingObjects(List<LearningSample> learnSamples){
+        List<LearningSample> fallingSamples = new ArrayList<>();
+        for (LearningSample learnSample : learnSamples) {
+            if (!learnSample.getResult()) fallingSamples.add(learnSample);
         }
-        return fallingObjects;
+        return fallingSamples;
     }
 
-    private Double[] findMean(List<LearningSample> learnObjects){
-        int featureLen = learnObjects.get(0).getFeatures().length;
+    private Double[] findMean(List<LearningSample> learnSamples){
+        int featureLen = learnSamples.get(0).getFeatures().length;
         Double[] mean = new Double[featureLen];
         Arrays.fill(mean, 0.0);
-        for (LearningSample learnObject : learnObjects) {
+        for (LearningSample learnObject : learnSamples) {
             for (int i = 0; i < featureLen; i++){
-                mean[i] += (learnObject.getFeatures()[i] / learnObjects.size());
+                mean[i] += (learnObject.getFeatures()[i] / learnSamples.size());
             }
         }
         return mean;
     }
 
-    private Double[][] findDistance(List<LearningSample> learnObjects, Double[] mean){
-        int featureLen = learnObjects.get(0).getFeatures().length;
+    private Double[][] findDistance(List<LearningSample> learnSamples, Double[] mean){
+        int featureLen = learnSamples.get(0).getFeatures().length;
         Double[][] distance = new Double[featureLen][featureLen];
         for (int i = 0; i < featureLen; i++) Arrays.fill(distance[i], 0.0);
-        for (LearningSample learnObject : learnObjects) {
+        for (LearningSample learnSample : learnSamples) {
             for (int i = 0; i < featureLen; i++) {
                 for (int j = 0; j < i + 1; j++) {
-                    Double curDistance = (learnObject.getFeatures()[i] - mean[i]) * (learnObject.getFeatures()[j] - mean[j]) / learnObjects.size();
+                    Double curDistance = (learnSample.getFeatures()[i] - mean[i]) * (learnSample.getFeatures()[j] - mean[j]) / learnSamples.size();
                     distance[i][j] += curDistance;
                     distance[j][i] += curDistance;
                 }

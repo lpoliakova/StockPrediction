@@ -21,8 +21,8 @@ public class FileReader {
                     read(scanner, stock, percentage);
                     skip(scanner, MAX_PERCENT - percentage);
                 } else {
-                    skip(scanner, percentage);
-                    read(scanner, stock, MAX_PERCENT - percentage);
+                    skip(scanner, MAX_PERCENT - percentage);
+                    read(scanner, stock, percentage);
                 }
             }
         }
