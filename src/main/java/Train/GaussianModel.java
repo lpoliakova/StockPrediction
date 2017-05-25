@@ -13,7 +13,7 @@ public class GaussianModel implements Model{
     private Double[] meanFalling;
     private Double[][] distanceFalling;
 
-    GaussianModel(){
+    public GaussianModel(){
         meanRaising = new Double[] {0.0, 0.0};
         distanceRaising = new Double[][] {{0.0, 0.0}, {0.0, 0.0}};
         meanFalling = new Double[] {0.0, 0.0};
@@ -38,16 +38,23 @@ public class GaussianModel implements Model{
         for (int i = 0; i < features.length; i++){
             prediction += toMultiply[i] * (features[i] - mean[i]);
         }
+        System.out.println(prediction);
         return prediction;
     }
 
     public Model learn(List<LearningSample> learnObjects){
         List<LearningSample> raisingSamples = getRaisingObjects(learnObjects);
         List<LearningSample> fallingSamples = getFallingObjects(learnObjects);
+
         meanRaising = findMean(raisingSamples);
+        System.out.println(Arrays.toString(meanRaising));
         meanFalling = findMean(fallingSamples);
+        System.out.println(Arrays.toString(meanFalling));
+
         distanceRaising = findInverse2(findDistance(raisingSamples, meanRaising));
+        System.out.println(Arrays.deepToString(distanceRaising));
         distanceFalling = findInverse2(findDistance(fallingSamples, meanFalling));
+        System.out.println(Arrays.deepToString(distanceFalling));
         return this;
     }
 
@@ -88,7 +95,7 @@ public class GaussianModel implements Model{
                 for (int j = 0; j < i + 1; j++) {
                     Double curDistance = (learnSample.getFeatures()[i] - mean[i]) * (learnSample.getFeatures()[j] - mean[j]) / learnSamples.size();
                     distance[i][j] += curDistance;
-                    distance[j][i] += curDistance;
+                    if (i != j) distance[j][i] += curDistance;
                 }
             }
         }
