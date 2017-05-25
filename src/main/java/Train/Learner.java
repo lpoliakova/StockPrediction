@@ -14,12 +14,12 @@ import java.util.List;
 public class Learner {
 
     public static Model learn(File file, Integer amount, Integer percent) throws FileNotFoundException{
-        List<LearningSample> learnObjects = getLearnObjects(file, amount, percent);
+        List<LearningSample> learnObjects = getLearnSamples(file, amount, percent);
         GaussianModel gaussian = new GaussianModel();
         return gaussian.learn(learnObjects);
     }
 
-    private static List<LearningSample> getLearnObjects(File file, Integer amount, Integer percent) throws FileNotFoundException{
+    private static List<LearningSample> getLearnSamples(File file, Integer amount, Integer percent) throws FileNotFoundException{
         List<StockData> stockData = FileReader.read(file, amount, percent + 1, true);
 
         List<LearningSample> learnObjects = new ArrayList<>();

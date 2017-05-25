@@ -10,14 +10,14 @@ import java.util.*;
 public class FileReader {
     private static final int MAX_PERCENT = 100;
 
-    public static List<StockData> read(File file, int amount, int percentage, boolean train) throws FileNotFoundException{
+    public static List<StockData> read(File file, int amount, int percentage, boolean firstPart) throws FileNotFoundException{
         percentage = checkPercentage(percentage);
 
         List<StockData> stock = new ArrayList<>();
 
         try (Scanner scanner = new Scanner(file)) {
             for (int i = 0; i < amount && scanner.hasNextLine(); i += MAX_PERCENT) {
-                if (train) {
+                if (firstPart) {
                     read(scanner, stock, percentage);
                     skip(scanner, MAX_PERCENT - percentage);
                 } else {
