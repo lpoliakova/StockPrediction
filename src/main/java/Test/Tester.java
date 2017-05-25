@@ -90,12 +90,22 @@ public class Tester {
         return new ROCPoint(positive, negative);
     }
 
-    private static void writeDown(File file, ROC roc) throws FileNotFoundException{
+    public static void writeDown(File file, ROC roc) throws FileNotFoundException{
         try (PrintWriter printWriter = new PrintWriter(new FileOutputStream(file))){
             for (ROCPoint point : roc.getRoc()) {
                 printWriter.println(point);
             }
             printWriter.flush();
         }
+    }
+
+    public static Double getAuc(ROC roc){
+        Double auc = 0.0;
+        for (int i = 0; i < roc.getRoc().size() - 1; i++){
+            Double height = (roc.getRoc().get(i).getTruePositive() + roc.getRoc().get(i+1).getTruePositive()) / 2;
+            Double length = roc.getRoc().get(i + 1).getFalsePositive() - roc.getRoc().get(i).getFalsePositive();
+            auc += (height * length);
+        }
+        return auc;
     }
 }
